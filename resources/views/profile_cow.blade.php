@@ -46,6 +46,16 @@
 									<td>{{$l->cow_name}}</td>
 								</tr>
 								<tr style="text-align: left;">
+									<td>เพศ</td>
+									<td>
+										@if($l->gender == 'f')
+										<span style="color: #E74C3C;"><i class="icon-female"></i></span> เพศเมีย
+										@else
+										<span style="color: #3498DB;"> <i class="icon-male"></i> </span> เพศผู้
+										@endif
+									</td>
+								</tr>
+								<tr style="text-align: left;">
 									<td>อายุ</td>
 									<td>{{Carbon::parse($l-> cow_dob)->diff(Carbon::now())->format('%y ปี %m เดือน')}}</td>
 								</tr>
@@ -153,7 +163,7 @@
 								<th class="center">ลำดับ</th>
 								<th>ชื่อเจ้าของ</th>
 								<th class="hidden-xs">วันที่</th>
-								<th class="center">จัดการ</th>
+								<th class="text-center">จัดการ</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -162,8 +172,10 @@
 								<td class="center">{{$i++}}</td>
 								<td>{{$list->member_name}}</td>
 								<td>{{$list->cow_history_date}}</td>
-								<td class="center">
-									<a href="#delete_{{$list->cow_history_id}}" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+								<td class="text-center">
+									<a href="#delete_{{$list->cow_history_id}}" data-toggle="modal" style="color: #1B2631;">
+										<i class="icon-remove2"></i>
+									</a>
 								</td>
 							</tr>
 							@endforeach
@@ -221,7 +233,7 @@
 									{{$breed->name}}
 								</td>
 								<td>
-									<a href="#" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+									<a href="#" data-toggle="modal" style="color: #1B2631;"><i class="icon-remove2"></i></a>
 								</td>
 							</tr>
 							@endforeach

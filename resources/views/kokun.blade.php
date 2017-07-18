@@ -5,7 +5,7 @@
 <!-- Page header -->
 <div class="page-header">
 	<div class="page-title">
-		<h3 style="font-family: 'Prompt', sans-serif; font-size: 36px; color: #5F6A6A;">ฟาร์มลูกโค <span style="font-size: 14px;">ระบบจัดการประชากรโค</span></h3>
+		<h3 style="font-family: 'Prompt', sans-serif; font-size: 36px; color: #5F6A6A;">ฟาร์มโคขุน <span style="font-size: 14px;">ระบบจัดการประชากรโค</span></h3>
 	</div>
 	<div class="header-buttons">
 		<a type="button" href="{{url('form_cow')}}" class="btn btn-success" style="background: #44A504; border-color: #3D9107; color: #fff;"><i class="icon-plus"></i> |เพิ่มข้อมูล </a> 
@@ -17,7 +17,7 @@
 <div class="breadcrumb-line">
 	<ul class="breadcrumb">
 		<li><a href="index.html">หน้าหลัก</a></li>
-		<li class="active">ฟาร์มลูกโค</li>
+		<li class="active">ฟาร์มโคขุน</li>
 	</ul>
 
 	<div class="visible-xs breadcrumb-toggle">
@@ -30,7 +30,7 @@
 	<div class="row">
 		<div class="col-md-9" style="border-right:1px solid #EBEDEF;">
 			<div class="form-group">
-				<span class="label label-primary">คำอธิบาย</span> <span style="color: #E74C3C;"><i class="icon-female"></i></span> โคเพศเมีย &nbsp;&nbsp;<span style="color: #3498DB;"> <i class="icon-male"></i></span>  โคเพศผู้ &nbsp; (ลูกโค : แรกเกิด - 8 เดือน)
+				<span class="label label-primary">คำอธิบาย</span> <span style="color: #E74C3C;"><i class="icon-female"></i></span> โคเพศเมีย &nbsp;&nbsp;<span style="color: #3498DB;"> <i class="icon-male"></i></span>  โคเพศผู้ &nbsp; (โคขุน : 8 เดือน - 1ปี 6 เดือน)
 			</div>
 			<div class="form-group">
 				<div class="datatable">
@@ -47,7 +47,7 @@
 						</thead>
 						<tbody class="center">
 							@foreach($cow as $list)
-							@if(Carbon::parse($list-> cow_dob)->diff(Carbon::now())->format('%y%m') < '8')
+							@if(Carbon::parse($list-> cow_dob)->diff(Carbon::now())->format('%y%m') > '8' && Carbon::parse($list-> cow_dob)->diff(Carbon::now())->format('%y%m') < '16' )
 							<tr>
 								<td class="center">{{$i++}}</td>
 								<td><a href="{{url('profile_cow/'.$list->cow_id)}}">{{$list->qrcode}} - {{$list->cow_name}}</a></td>

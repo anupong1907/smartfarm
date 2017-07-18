@@ -54,8 +54,8 @@
 								<td>{{$list->news_created_at}}</td>
 								<td>{{$list->news_updated_at}}</td>
 								<td class="text-center">
-									<a href="#edit_{{$list->news_id}}" type="button" class="btn btn-success btn-xs btn-icon" data-toggle="modal" style="background: #FFCC66; border-color: #FFCC66; color: #FFFFFF;"><i class="icon-pencil2"></i></a>
-									<a  href="#delete_{{$list->news_id}}" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+									<a href="#edit_{{$list->news_id}}" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;
+									<a  href="#delete_{{$list->news_id}}" style="color: #1B2631;" data-toggle="modal"><i class="icon-remove2"></i></a>
 								</td>
 							</tr>
 							@endif

@@ -61,7 +61,9 @@
 					<li class="@if(Request::is('breeder')=='breeder') active @endif">
 						<a href="{{url('breeder')}}">โคพ่อพันธุ์และแม่พันธุ์</a>
 					</li>
-					<li><a href="wysiwyg.html">ฟาร์มโคขุน</a></li>
+					<li class="@if(Request::is('kokun')=='kokun') active @endif">
+						<a href="{{url('kokun')}}">ฟาร์มโคขุน</a>
+					</li>
 					<li class="@if(Request::is('ready_cow')=='ready_cow') active @endif">
 						<a href="{{url('ready_cow')}}">โคพร้อมจำหน่าย</a>
 					</li>

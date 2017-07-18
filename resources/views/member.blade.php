@@ -31,6 +31,7 @@
 				<tr style="background-color: #283747; color: #FFF;">
 					<th width="10" class="center" style="background-color: #283747;">ลำดับ</th>
 					<th style="background-color: #283747;">ชื่อ-สกุล</th>
+					<th style="background-color: #283747;">ที่อยู่</th>
 					<th style="background-color: #283747;">หมายเลขโทรศัพท์</th>
 					<th style="background-color: #283747;">อีเมล</th>
 					<th style="background-color: #283747;">รัฐวิสาหกิจชุมชน</th>	
@@ -42,14 +43,15 @@
 				<tr>
 					<td class="text-center">{{$i++}}</td>
 					<td><a href="{{url('profile_member/'.$list->member_id)}}">{{$list->member_name}}</a></td>
+					<td>{{$list->member_address}}</td>
 					<td format="999-999-9999">{{$list->member_phone}}</td>
 					<td>{{$list->member_email}}</td>
 					<td>{{$list->users_name}}</td>
 					<td class="center">
 						<div class="visible-md visible-lg hidden-sm hidden-xs">
-							<a href="{{url('profile_member/'.$list->member_id)}}" type="button" class="btn btn-info btn-xs btn-icon"><i class="icon-search3"></i></a>
-							<a href="#edit_{{$list->member_id}}" type="button" class="btn btn-success btn-xs btn-icon" data-toggle="modal" style="background: #FFCC66; border-color: #FFCC66; color: #FFFFFF;"><i class="icon-pencil2"></i></a>
-							<a href="#delete_{{$list->member_id}}" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+							<a href="{{url('profile_member/'.$list->member_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
+							<a href="#edit_{{$list->member_id}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;
+							<a href="#delete_{{$list->member_id}}" style="color: #1B2631;" data-toggle="modal"><i class="icon-remove2"></i></a>
 						</div>
 					</td>
 				</tr>

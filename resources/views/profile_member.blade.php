@@ -127,11 +127,11 @@
 											
 											<li>
 												<div class="statistics-info">
-													<a href="#" title="" class="bg-primary"><i class="icon-user-plus"></i></a>
+													<a href="#" title="" class="bg-primary"><i class="icon-link6"></i></a>
 													<strong>{{$breeder_m+$breeder_f}}</strong>
 												</div>
 												<div class="progress progress-micro">
-													<div class="progress-bar progress-bar-primary" role="progressbar" style="width: @if($breeder_m!=null||$breeder_f!=null){{$breeder_m+$breeder_f * 100 /$cow_count}}%; @endif">
+													<div class="progress-bar progress-bar-primary" role="progressbar" style="width: @if($breeder_m!=null||$breeder_f!=null){{($breeder_m + $breeder_f)*(100 /$cow_count)}}%; @endif">
 													</div>
 												</div>
 												<span>โคพ่อพันธุ์และโคแม่พันธุ์</span>
@@ -153,7 +153,7 @@
 													<strong>{{$b}}</strong>
 												</div>
 												<div class="progress progress-micro">
-													<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: @if($b!=null){{$b * 100 /$cow_count}}%; @endif">
+													<div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: @if($b!=null){{$b * 100 /$cow_count}}%; @endif">
 													</div>
 												</div>
 												<span>ประชากรโคขุน</span>
@@ -164,7 +164,7 @@
 													<strong>{{$c}}</strong>
 												</div>
 												<div class="progress progress-micro">
-													<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: @if($c!=null){{$c * 100 /$cow_count}}%; @endif">
+													<div class="progress-bar progress-bar-danger" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: @if($c!=null){{$c * 100 /$cow_count}}%; @endif">
 													</div>
 												</div>
 												<span>โคพร้อมจำหน่าย</span>
@@ -175,15 +175,14 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<span class="label label-info">คำอธิบาย</span> : <span style="color: green;"> ✔</span> โคที่มีสถานะอยู่กับเจ้าของ <span style="color: #EC7063;"> ✘</span>  โคที่มีสถานะถูกขายหรือตายไปแล้ว
+							<span class="label label-primary">คำอธิบาย</span> <span style="color: green;"> ✔</span> โคที่มีสถานะอยู่กับเจ้าของ <span style="color: #EC7063;"> ✘</span>  โคที่มีสถานะถูกขายหรือตายไปแล้ว
 						</div>
 						<div class="datatable">
 							<table class="table table-striped ">
 								<thead >
 									<tr>
 										<th width="30" class="center" style="background-color: #283747; color: #FFF;">ลำดับ</th>
-										<th width="110" style="background-color: #283747; color: #FFF;">รหัสโค</th>
-										<th width="120" class="center" style="background-color: #283747; color: #FFF;">ชื่อ</th>
+										<th width="150" style="background-color: #283747; color: #FFF;">รายการ</th>
 										<th width="120" class="center" style="background-color: #283747; color: #FFF;">อายุ</th>
 										<th width="120" class="center" style="background-color: #283747; color: #FFF;">ประเภท</th>
 										<th width="30" class="center" style="background-color: #283747; color: #FFF;">สถานะ</th>
@@ -194,8 +193,7 @@
 									@foreach($member_cows as $cow)
 									<tr>
 										<td class="center">{{$i++}}</td> 
-										<td><a href="{{url('profile_cow/'.$cow->cow_id)}}" target="_blank">{{$cow->qrcode}}</a></td>  
-										<td>{{$cow->name}}</td>   
+										<td><a href="{{url('profile_cow/'.$cow->cow_id)}}" target="_blank">{{$cow->qrcode}} - {{$cow->name}}</a></td> 
 										<td>{{Carbon::parse($cow-> dob)->diff(Carbon::now())->format('%y ปี %m เดือน')}}</td>  
 										<td class="center">
 											@if($cow->breeder_f_id != null || $cow->breeder_m_id != null)
@@ -223,8 +221,9 @@
 										</td>  
 										<td class="center">
 											<div class="visible-md visible-lg hidden-sm hidden-xs">
-												<a href="#edit_{{$cow->qrcode}}" type="button" class="btn btn-success btn-xs btn-icon" data-toggle="modal" style="background: #FFCC66; border-color: #FFCC66; color: #FFFFFF;"><i class="icon-pencil2"></i></a>
-												<a href="#delete_{{$cow->qrcode}}" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+												<a href="{{url('profile_cow/'.$cow->cow_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
+												<a href="#edit_{{$cow->qrcode}}" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;
+												<a href="#delete_{{$cow->qrcode}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-remove2"></i></a>
 											</div>
 										</td> 
 									</tr>

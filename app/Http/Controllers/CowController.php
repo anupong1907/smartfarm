@@ -31,11 +31,15 @@ class CowController extends Controller
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
         $i = 1;
-        $breeder_cows = Cow::leftjoin('breeder_m','breeder_m.cow_id','cow.id')
-        ->leftjoin('breeder_f','breeder_f.cow_id','cow.id')
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
         ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
         ->get();
-        return view('cow')->with(['cow'=>$cow,'i'=>$i,'member'=>$member,'breeder_cows'=>$breeder_cows]);
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        return view('cow')->with(['cow'=>$cow,'i'=>$i,'member'=>$member,'cow_m'=>$cow_m,'cow_f'=>$cow_f]);
     }
 
     public function breeder(){
@@ -44,14 +48,14 @@ class CowController extends Controller
         ->join('member','member.id','cow_history.member_id')
         ->where('cow_history.status',1)
         ->where('cow.status',1)
-        ->select('*','cow.name as cow_name','member.name as member_name')
+        ->select('*','cow.name as cow_name','member.name as member_name','cow.id as cow_id')
         ->get();
         $cow_breeder_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
         ->join('cow_history','cow_history.cow_id','cow.qrcode')
         ->join('member','member.id','cow_history.member_id')
         ->where('cow_history.status',1)
         ->where('cow.status',1)
-        ->select('*','cow.name as cow_name','member.name as member_name')
+        ->select('*','cow.name as cow_name','member.name as member_name','cow.id as cow_id')
         ->get();
         $cows_list = Cow::join('cow_history','cow_history.cow_id','cow.qrcode')
         ->leftjoin('breeder_m','breeder_m.cow_id','cow.id')
@@ -60,20 +64,40 @@ class CowController extends Controller
         ->where('cow.status',1)
         ->get();
         $i = 1;
-        return view('breeder')->with(['cow_breeder_m'=>$cow_breeder_m,'i'=>$i,'cows_list'=>$cows_list,'cow_breeder_f'=>$cow_breeder_f]);
+        $cow = Cow_history::join('cow','cow.qrcode','cow_history.cow_id')
+        ->join('member','member.id','cow_history.member_id')
+        ->join('users','users.id','member.users_id')
+        ->where('cow_history.status',1)
+        ->where('cow.status',1)
+        ->orderBy('cow.created_at','desc')
+        ->select('*','cow.id as cow_id','users.name as users_name','member.name as member_name','cow.name as cow_name','cow.picture as cow_picture','cow.dob as cow_dob','cow.created_at as cow_created_at')
+        ->get();
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        return view('breeder')->with(['cow_breeder_m'=>$cow_breeder_m,'i'=>$i,'cows_list'=>$cows_list,'cow_breeder_f'=>$cow_breeder_f,'cow'=>$cow,'cow_m'=>$cow_m,'cow_f'=>$cow_f]);
     }
 
     
     
     public function form_cow(){
-        $cow = Cow::join('breeder','breeder.cow_id','=','cow.qrcode')
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
         ->where('cow.status',1)
-        ->select('*','cow.id as cow_id','breeder.id as breeder_id')
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
         ->get();
         $member = Users::join('member','member.users_id','=','users.id')
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
-        return view('form_cow')->with(['cow'=>$cow,'member'=>$member]);
+        return view('form_cow')->with(['cow_m'=>$cow_m,'member'=>$member,'cow_f'=>$cow_f]);
     }
     public function post_cow(Request $request){
         do {
@@ -126,19 +150,69 @@ class CowController extends Controller
         ->join('users','users.id','member.users_id')
         ->where('cow_history.status',1)
         ->where('cow.status',1)
-        ->select('*','cow.id as cow_id','users.name as users_name','member.name as member_name','cow.name as cow_name','cow.picture as cow_picture','cow.dob as cow_dob')
+        ->orderBy('cow.created_at','desc')
+        ->select('*','cow.id as cow_id','users.name as users_name','member.name as member_name','cow.name as cow_name','cow.picture as cow_picture','cow.dob as cow_dob','cow.created_at as cow_created_at')
         ->get();
         $member = Users::join('member','member.users_id','=','users.id')
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
-       
+       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
         $i = 1;
-       
-        return view('young_cow')->with(['cow'=>$cow,'i'=>$i,'member'=>$member]);
+        return view('young_cow')->with(['cow'=>$cow,'i'=>$i,'member'=>$member,'cow_m'=>$cow_m,'cow_f'=>$cow_f]);
+    }
+    public function kokun(){
+        $cow = Cow_history::join('cow','cow.qrcode','cow_history.cow_id')
+        ->join('member','member.id','cow_history.member_id')
+        ->join('users','users.id','member.users_id')
+        ->where('cow_history.status',1)
+        ->where('cow.status',1)
+        ->orderBy('cow.created_at','desc')
+        ->select('*','cow.id as cow_id','users.name as users_name','member.name as member_name','cow.name as cow_name','cow.picture as cow_picture','cow.dob as cow_dob','cow.created_at as cow_created_at')
+        ->get();
+        $member = Users::join('member','member.users_id','=','users.id')
+        ->select('member.name as member_name','users.name as users_name','member.id as member_id')
+        ->get();
+       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $i = 1;
+        return view('kokun')->with(['cow'=>$cow,'i'=>$i,'member'=>$member,'cow_m'=>$cow_m,'cow_f'=>$cow_f]);
     }
 
     public function ready_cow(){
-        return view('ready_cow');
+        $cow = Cow_history::join('cow','cow.qrcode','cow_history.cow_id')
+        ->join('member','member.id','cow_history.member_id')
+        ->join('users','users.id','member.users_id')
+        ->where('cow_history.status',1)
+        ->where('cow.status',1)
+        ->orderBy('cow.created_at','desc')
+        ->select('*','cow.id as cow_id','users.name as users_name','member.name as member_name','cow.name as cow_name','cow.picture as cow_picture','cow.dob as cow_dob','cow.created_at as cow_created_at')
+        ->get();
+        $member = Users::join('member','member.users_id','=','users.id')
+        ->select('member.name as member_name','users.name as users_name','member.id as member_id')
+        ->get();
+       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $cow_f = Cow::join('breeder_f','breeder_f.cow_id','cow.id')
+        ->where('cow.status',1)
+        ->select('*','cow.id as cow_id')
+        ->get();
+        $i = 1;
+        return view('ready_cow')->with(['cow'=>$cow,'i'=>$i,'member'=>$member,'cow_m'=>$cow_m,'cow_f'=>$cow_f]);
     }
 
     public function delete_breeder(Request $request){

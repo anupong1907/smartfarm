@@ -42,6 +42,7 @@ Route::post('post_trading','CowController@post_trading');
 Route::post('delete_cow_history','CowController@delete_cow_history');
 Route::post('update_cow','CowController@update_cow');
 Route::post('post_breed','CowController@post_breed');
+Route::get('kokun','CowController@kokun');
 // End CowController
 
 //Start GrassController

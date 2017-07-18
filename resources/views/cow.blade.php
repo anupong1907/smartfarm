@@ -20,14 +20,10 @@
 		<li><a href="{{url('/')}}">หน้าแรก</a></li>
 		<li class="active">ประชากรโคทั้งหมด</li>
 	</ul>
-
-	<div class="visible-xs breadcrumb-toggle">
-		<a class="btn btn-link btn-lg btn-icon" data-toggle="collapse" data-target=".breadcrumb-buttons"><i class="icon-menu2"></i></a>
-	</div>
 </div>
 <!-- /page header -->
 <div class="form-group">
-<span class="label label-primary">คำอธิบาย</span> : <span style="color: green;"> ✔</span> โคที่มีสถานะอยู่กับเจ้าของ <span style="color: #EC7063;"> ✘</span>  โคที่มีสถานะถูกขายหรือตายไปแล้ว
+<span class="label label-primary">คำอธิบาย</span> <span style="color: #E74C3C;"><i class="icon-female"></i></span> โคเพศเมีย &nbsp;&nbsp;<span style="color: #3498DB;"> <i class="icon-male"></i></span>  โคเพศผู้ &nbsp; (ลูกโค : แรกเกิด - 8 เดือน | โคขุน : 8 เดือน - 1ปี 6 เดือน | โคพร้อมจำหน่าย : 1ปี 6 เดือนเป็นต้นไป)
 </div>
 <!-- <div class="form-group">
 	<span class="label label-info">ลูกโค:</span> แรกเกิด - 8 เดือน
@@ -41,7 +37,8 @@
 			<thead style="background-color: #283747; color: #FFF;">
 				<tr >
 					<th width="30" class="center" style="background-color: #283747; color: #FFF;">ลำดับ</th>
-					<th width="130" class="center" style="background-color: #283747; color: #FFF;">รายการ</th>
+					<th width="130" style="background-color: #283747; color: #FFF;">รายการ</th>
+					<th width="30"  class="center" style="background-color: #283747; color: #FFF;">เพศ</th>
 					<th width="100" class="center" style="background-color: #283747; color: #FFF;">อายุ</th>
 					<th width="100" class="center" style="background-color: #283747; color: #FFF;">ประเภท</th>
 					<th width="150" class="center" style="background-color: #283747; color: #FFF;">เจ้าของ</th>
@@ -53,6 +50,13 @@
 				<tr>
 					<td class="center">{{$i++}}</td>
 					<td><a href="{{url('profile_cow/'.$list->cow_id)}}">{{$list->qrcode}} - {{$list->cow_name}}</a></td>
+					<td>
+						@if($list->gender == 'f')
+						<span style="color: #E74C3C;"><i class="icon-female"></i></span>
+						@else
+						<span style="color: #3498DB;"> <i class="icon-male"></i></span>
+						@endif
+					</td>
 					<td class="center">
 						{{Carbon::parse($list-> cow_dob)->diff(Carbon::now())->format('%y ปี %m เดือน')}}
 					</td>
@@ -75,9 +79,9 @@
 					</td>
 					<td class="center">{{$list->member_name}}</td>
 					<td class="center">
-						<a href="{{url('profile_cow/'.$list->cow_id)}}" type="button" class="btn btn-info btn-xs btn-icon"><i class="icon-search3"></i></a>
-						<a href="#edit_{{$list->cow_id}}" type="button" class="btn btn-success btn-xs btn-icon" data-toggle="modal" style="background: #FFCC66; border-color: #FFCC66; color: #FFFFFF;"><i class="icon-pencil2"></i></a>
-						<a href="#delete_{{$list->cow_id}}" type="button" class="btn btn-danger btn-xs btn-icon" data-toggle="modal"><i class="icon-remove2"></i></a>
+						<a href="{{url('profile_cow/'.$list->cow_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
+						<a href="#edit_{{$list->cow_id}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;
+						<a href="#delete_{{$list->cow_id}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-remove2"></i></a>
 					</td>
 				</tr>
 				@endforeach
@@ -198,8 +202,8 @@
 										</label>
 										<select class="select-full" name="breeder_m">
 											<option value="">&nbsp;</option>
-											@foreach($breeder_cows as $l)
-											<option value="{{$l->cow_id}}"  @if($l->cow_id==$list->breeder_m) selected='selected' @endif>{{$l->qrcode}} - {{$l->name}} </option>
+											@foreach($cow_m as $l)
+											<option value="{{$l->cow_id}}"  @if($l->cow_id==$list->breeder_m) selected='selected' @endif>{{$l->qrcode}} - {{$l->name}}</option>
 											@endforeach
 										</select>
 									</div>
@@ -211,15 +215,13 @@
 										</label>
 										<select class="select-full" name="breeder_f">
 											<option value="">&nbsp;</option>
-											@foreach($breeder_cows as $l)
-											<option value="{{$l->cow_id}}"  @if($l->cow_id==$list->breeder_f) selected='selected' @endif>{{$l->qrcode}} - {{$l->name}} </option>
+											@foreach($cow_f as $l)
+											<option value="{{$l->cow_id}}" @if($l->cow_id==$list->breeder_f) selected='selected' @endif>{{$l->qrcode}} - {{$l->name}}</option>
 											@endforeach
 										</select>
 									</div>
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 					<hr>

@@ -91,10 +91,8 @@
 									</label>
 									<select class="select-full" name="breeder_m">
 										<option value="">&nbsp;</option>
-										@foreach($cow as $list)
-										@if($list->gender == 'm')
+										@foreach($cow_m as $list)
 										<option value="{{$list->cow_id}}">{{$list->qrcode}} - {{$list->name}}</option>
-										@endif
 										@endforeach
 									</select>
 								</div>
@@ -106,10 +104,8 @@
 									</label>
 									<select class="select-full" name="breeder_f">
 										<option value="">&nbsp;</option>
-										@foreach($cow as $list)
-										@if($list->gender == 'f')
+										@foreach($cow_f as $list)
 										<option value="{{$list->cow_id}}">{{$list->qrcode}} - {{$list->name}}</option>
-										@endif
 										@endforeach
 									</select>
 								</div>
