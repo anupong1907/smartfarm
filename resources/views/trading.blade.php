@@ -42,7 +42,7 @@
 				<tr>
 					<td class="center">{{$i++}}</td>
 					<td class="center">{{$data->customer_name}}</td>
-					<td class="center"><a href="{{url('profile_cow/'.$data->cow_id)}}">{{$data->qrcode}} - {{$data->cow_name}}</a></td>
+					<td class="center">{{$data->qrcode}} - {{$data->cow_name}}</td>
 					<td class="center">{{$data->trading_date}}</td>
 					<td class="right">{{number_format($data->price,2)}}</td>
 					<td class="center">

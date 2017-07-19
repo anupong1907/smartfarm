@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Request;
 use App\Member;
 use App\News;
-
+use App\Users;
+use App\Cow_history;
+use App\Cow;
+use App\Trading;
+use DB;
 class HomeController extends Controller
 {
 
@@ -23,6 +27,13 @@ class HomeController extends Controller
 		->orderBy('news.created_at','desc')
 		->limit(10)
 		->get();
-		return view('index')->with(['members'=>$members,'last'=>$last]);
+		$commu = Users::leftjoin('member','member.users_id','users.id')
+		->leftjoin('cow_history','cow_history.member_id','member.id')
+		
+		->where('cow_history.status', 1) 
+		->select(DB::raw('count(cow_history.cow_id) as cow_count,users.name as users_name'))
+		->groupBy('users_name')
+		->get();
+		return view('index')->with(['members'=>$members,'last'=>$last,'commu'=>$commu]);
 	}
 }
