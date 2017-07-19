@@ -17,6 +17,15 @@
 
 <script type="text/javascript" src="{{url('js/plugins/charts/sparkline.min.js')}}"></script>
 
+<script type="text/javascript" src="{{url('js/plugins/charts/sparkline.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.orderbars.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.pie.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.time.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.animator.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/excanvas.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/plugins/charts/flot.resize.min.js')}}"></script>
+
 <script type="text/javascript" src="{{url('js/plugins/forms/uniform.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/plugins/forms/select2.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/plugins/forms/inputmask.js')}}"></script>
@@ -45,7 +54,31 @@
 
 <script type="text/javascript" src="{{url('js/bootstrap.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/application.js')}}"></script>
+
+<script type="text/javascript" src="{{url('js/charts/full/vertical_bars.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/horizontal_bars.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/simple_graph.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/auto_filled.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/auto_empty.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/multiple_axes.js')}}"></script>
+
+<script type="text/javascript" src="{{url('js/charts/full/animated_1.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/animated_2.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/animated_3.js')}}"></script>
+
+<script type="text/javascript" src="{{url('js/charts/full/donut.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/pie.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/full/pie_full.js')}}"></script>
+
+<script type="text/javascript" src="{{url('js/charts/widgets/filled_green.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/widgets/filled_red.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/widgets/filled_blue.js')}}"></script>
+
+<script type="text/javascript" src="{{url('js/charts/widgets/updating_1.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/widgets/updating_2.js')}}"></script>
+<script type="text/javascript" src="{{url('js/charts/widgets/updating_3.js')}}"></script>
 <link href="https://fonts.googleapis.com/css?family=Prompt|Poppins" rel="stylesheet">
+@yield('css')
 
 </head>
 

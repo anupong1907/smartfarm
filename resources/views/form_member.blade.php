@@ -1,5 +1,15 @@
 @extends('layouts.master')
+@section('css')
+<style>
+	#map-canvas{
+		width: auto;
+		height: 350px;
+	}
+</style>
 
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4GRmRnmCdikdUOz0HJkJ7YuZJo2NdLc&libraries=places" type="text/javascript"></script>
+@stop
 @section('content')
 <!-- Page header -->
 <div class="page-header">
@@ -93,6 +103,19 @@
 
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label class="control-label">
+						พิกัดที่อยู่
+					</label>
+					<div class="form-group">
+						<input type="text" id="searchmap" class="form-control">
+					</div>
+					<div id="map-canvas"></div>
+					<input type="hidden" class="form-control input-sm" name="lat" id="lat">
+					<input type="hidden" class="form-control input-sm" name="long" id="lng">
+				</div>
+			</div>
 			<hr>
 			<div class="row">
 				<div class="col-md-8">
@@ -109,4 +132,54 @@
 		</form>	
 	</div>
 </div>
+
+<script>
+
+
+	var map = new google.maps.Map(document.getElementById('map-canvas'),{
+		center:{
+			lat: 13.7563309,
+			lng: 100.50176510000006
+		},
+		zoom:20
+	});
+
+	var marker = new google.maps.Marker({
+		position: {
+			lat: 13.7563309,
+			lng: 100.50176510000006
+		},
+		map: map,
+		draggable: true
+	});
+
+	var searchBox = new google.maps.places.SearchBox(document.getElementById('searchmap'));
+
+	google.maps.event.addListener(searchBox,'places_changed',function(){
+
+		var places = searchBox.getPlaces();
+		var bounds = new google.maps.LatLngBounds();
+		var i, place;
+
+		for(i=0; place=places[i];i++){
+			bounds.extend(place.geometry.location);
+  			marker.setPosition(place.geometry.location); //set marker position new...
+  		}
+
+  		map.fitBounds(bounds);
+  		map.setZoom(15);
+
+  	});
+
+	google.maps.event.addListener(marker,'position_changed',function(){
+
+		var lat = marker.getPosition().lat();
+		var lng = marker.getPosition().lng();
+
+		$('#lat').val(lat);
+		$('#lng').val(lng);
+
+	});
+
+</script>
 @stop

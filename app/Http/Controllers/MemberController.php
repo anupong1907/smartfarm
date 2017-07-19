@@ -34,6 +34,8 @@ class MemberController extends Controller
     	$member->email = $request::get('email');
     	$member->username = $request::get('username');
     	$member->password = $request::get('password');
+        $member->lat = $request::get('lat');
+        $member->long = $request::get('long');
     	if($request::hasFile('picture')) {
             $picture = 'picture'.Carbon::now()->toDateString().str_random().'.jpg';
             $destination = public_path().'/images/';
@@ -77,7 +79,7 @@ class MemberController extends Controller
         ->get();
 
         $members = Member::join('users','users.id','member.users_id')
-        ->select('*','member.id as member_id','member.name as member_name','users.name as users_name','member.email as member_email','member.phone as member_phone','member.picture as member_picture','member.phone as member_phone','member.address as member_address','member.email as member_email','users.id as users_id')
+        ->select('*','member.id as member_id','member.name as member_name','users.name as users_name','member.email as member_email','member.phone as member_phone','member.picture as member_picture','member.phone as member_phone','member.address as member_address','member.email as member_email','users.id as users_id','member.lat as member_lat','member.long as member_long')
         ->where('member.id',$id)
         ->get();
 

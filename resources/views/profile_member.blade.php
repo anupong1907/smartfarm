@@ -1,6 +1,17 @@
 <?php Use Carbon\Carbon; ?> 
 @extends('layouts.master')
 
+@section('css')
+<style>
+	#map-canvas{
+		width: auto;
+		height: 300px;
+	}
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4GRmRnmCdikdUOz0HJkJ7YuZJo2NdLc&libraries=places" type="text/javascript"></script>
+@stop
+
 @section('content')
 <!-- Page header -->
 <div class="page-header">
@@ -12,7 +23,7 @@
 <!-- Breadcrumbs line -->
 <div class="breadcrumb-line">
 	<ul class="breadcrumb">
-		<li><a href="{{url('/')}}">หน้าแรก</a></li>
+		<li><a href="{{url('/')}}">หน้าแรก</a></li> 
 		<li><a href="{{url('member')}}">ระบบจัดการสมาชิก</a></li>
 		<li class="active"> ข้อมูลส่วนตัวสมาชิก</li>
 	</ul>
@@ -34,7 +45,7 @@
 							<img src="@if($member->member_picture != null) {{ url('images/'. $member->member_picture) }} @else https://www.shearwater.com/wp-content/plugins/lightbox/images/No-image-found.jpg @endif " style=" object-fit: cover; width: 200px; height: 200px; border-radius: 5px; ">
 						</div>
 						<div class="caption text-center">
-							<h6 style="font-size: 16px;">{{$member->member_name}} <small>Front end developer</small></h6>
+							<h6 style="font-size: 16px;">{{$member->member_name}} <small>{{$member->users_name}}</small></h6>
 						</div>
 					</div>
 				</div>
@@ -61,27 +72,32 @@
 					</tr>
 				</tbody>
 			</table>
-			<table class="table table-condensed table-hover">
-				<thead>
-					<tr>
-						<th colspan="3">ข้อมูลการติดต่อ</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>เบอร์โทร</td>
-						<td>{{$member->member_phone}}</td>
-					</tr>
-					<tr>
-						<td>อีเมลล์</td>
-						<td>{{$member->member_email}}</td>
-					</tr>
-				</tbody>
-			</table>
-
+			<div class="form-group">
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th colspan="3">ข้อมูลการติดต่อ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>เบอร์โทร</td>
+							<td>{{$member->member_phone}}</td>
+						</tr>
+						<tr>
+							<td>อีเมลล์</td>
+							<td>{{$member->member_email}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="form-group">
+				<div id="map-canvas"></div>
+			</div>
 		</div>
 
 		<div class="col-lg-8" >
+			
 			<div class="tabbable page-tabs">
 				<ul class="nav nav-pills nav-justified">
 					<li class="active"><a href="#cow" data-toggle="tab"><i class="icon-paragraph-justify2"></i> ข้อมูลประชากรโคทั้งหมด </a></li>
@@ -115,10 +131,11 @@
 
 											foreach ($member_cows as $cow) {
 												if ($cow->cow_status==1) {
-													if($cow->breeder_cow_id==null){
+													if($cow->breeder_m_id==null&&$cow->breeder_f_id==null){
 														if (Carbon::parse($cow->dob)->diff(Carbon::now())->format('%y%m') > '16') {
 															$c = $c+1;
 														}
+
 													}
 												}
 
@@ -182,8 +199,8 @@
 								<thead >
 									<tr>
 										<th width="30" class="center" style="background-color: #283747; color: #FFF;">ลำดับ</th>
-										<th width="150" style="background-color: #283747; color: #FFF;">รายการ</th>
-										<th width="120" class="center" style="background-color: #283747; color: #FFF;">อายุ</th>
+										<th width="170" style="background-color: #283747; color: #FFF;">รายการ</th>
+										<th width="100" class="center" style="background-color: #283747; color: #FFF;">อายุ</th>
 										<th width="120" class="center" style="background-color: #283747; color: #FFF;">ประเภท</th>
 										<th width="30" class="center" style="background-color: #283747; color: #FFF;">สถานะ</th>
 										<th  width="100" class="center" style="background-color: #283747; color: #FFF;">จัดการ</th>
@@ -405,6 +422,29 @@
 		@endif
 		@endforeach
 	});
+
+	var lat = {{$member->member_lat}};
+	var lng = {{$member->member_long}};
+	var img = "{{url('images/home.png')}}";
+
+	var map = new google.maps.Map(document.getElementById('map-canvas'),{
+		center:{
+			lat: lat,
+			lng: lng
+		},
+		zoom: 15
+	});
+	
+	var marker = new google.maps.Marker({
+		position:{
+			lat:lat,
+			lng: lng
+		},
+		map:map,
+		icon: img,
+		title : '{{$member->member_address}}'
+	});
+
 </script>
 
 @stop
