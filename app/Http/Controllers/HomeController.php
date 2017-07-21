@@ -10,6 +10,7 @@ use App\Cow_history;
 use App\Cow;
 use App\Trading;
 use DB;
+use App\Area;
 class HomeController extends Controller
 {
 
@@ -34,6 +35,9 @@ class HomeController extends Controller
 		->select(DB::raw('count(cow_history.cow_id) as cow_count,users.name as users_name'))
 		->groupBy('users_name')
 		->get();
-		return view('index')->with(['members'=>$members,'last'=>$last,'commu'=>$commu]);
+		$grass = Member::join('area','area.member_id','member.id')
+		->select('*','member.id as member_id')
+		->get();
+		return view('index')->with(['members'=>$members,'last'=>$last,'commu'=>$commu,'grass'=>$grass]);
 	}
 }

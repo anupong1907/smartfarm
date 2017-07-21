@@ -4,12 +4,30 @@
 @section('css')
 <style>
 	#map-canvas{
-		width: auto;
+		width: 100%;
 		height: 300px;
 	}
+	.my-custom-class-for-label {
+  width: auto; height: 20px;
+  
+  border: 1px solid #eb3a44;
+  border-radius: 5px;
+  
+  background: #fee1d7;
+  color: #eb3a44;
+  text-align: center;
+  line-height: 20px;
+  
+  font-weight: bold;
+  font-size: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
 </style>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4GRmRnmCdikdUOz0HJkJ7YuZJo2NdLc&libraries=places" type="text/javascript"></script>
+<script src="https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js"></script>
 @stop
 
 @section('content')
@@ -192,7 +210,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<span class="label label-primary">คำอธิบาย</span> <span style="color: green;"> ✔</span> โคที่มีสถานะอยู่กับเจ้าของ <span style="color: #EC7063;"> ✘</span>  โคที่มีสถานะถูกขายหรือตายไปแล้ว
+							<span class="label label-primary">คำอธิบาย</span> &nbsp;&nbsp;<img src="{{url('images/Circle_Green.png')}}">  โคที่มีสถานะอยู่กับเจ้าของ &nbsp;&nbsp;<img src="{{url('images/Circle_Red.png')}}">   โคที่มีสถานะถูกขายหรือตายไปแล้ว
 						</div>
 						<div class="datatable">
 							<table class="table table-striped ">
@@ -231,9 +249,9 @@
 										</td> 
 										<td class="center">
 											@if($cow->cow_status==1)
-											<span style="color: green;">✔</span>
+											<img src="{{url('images/Circle_Green.png')}}">
 											@else
-											<span style="color: #EC7063;">✘</span>  
+											<img src="{{url('images/Circle_Red.png')}}"> 
 											@endif
 										</td>  
 										<td class="center">
@@ -251,6 +269,50 @@
 						</div>
 					</div>
 					<div class="tab-pane" id="grass">
+							<div class="form-group">
+							<span class="label label-primary">คำอธิบาย</span> &nbsp;&nbsp;<img src="{{url('images/Circle_Green.png')}}">  พื้นที่ที่มีหญ้าปลูกอยู่ &nbsp;&nbsp;<img src="{{url('images/Circle_Red.png')}}">   พื้นที่ไม่ได้ปลูกหญ้า
+						</div>
+						<div class="form-group">
+	<div class="datatable">
+		<table class="table table-striped">
+			<thead >
+				<tr style="background-color: #283747; color: #FFF;">
+					<th width="10" class="center" style="background-color: #283747;">ลำดับ</th>
+					<th style="background-color: #283747;">พื้นที่/ไร่</th>
+					<th style="background-color: #283747;">วันที่ปลูก</th>
+					<th style="background-color: #283747;">วันที่เก็บ</th>
+					<th style="background-color: #283747;">สถานะ</th>
+					<th style="background-color: #283747;" class="center">จัดการ</th>					
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($grass as $list)
+				<tr>
+					<td>{{$no++}}</td>
+					<td>{{$list->area}}</td>
+					<td>{{ \Carbon\Carbon::parse($list->start_date)->format('d-m-Y')}}</td>
+					<td>{{ \Carbon\Carbon::parse($list->end_date)->format('d-m-Y')}}</td>
+					<td>
+						@if($list->status == 1)
+						<img src="{{url('images/Circle_Green.png')}}">
+						@else
+						<img src="{{url('images/Circle_Red.png')}}">
+						@endif
+					</td>
+					<td class="center">
+						<div class="visible-md visible-lg hidden-sm hidden-xs">
+							<a href="{{url('profile_member/'.$list->member_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
+							<a href="#edit_{{$list->member_id}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;
+							<a href="#delete_{{$list->member_id}}" style="color: #1B2631;" data-toggle="modal"><i class="icon-remove2"></i></a>
+						</div>
+					</td>
+				</tr>
+				@endforeach
+			</tbody>
+		
+		</table>
+	</div>
+</div>
 					</div>
 					<div class="tab-pane" id="dung">
 					</div>
@@ -423,27 +485,35 @@
 		@endforeach
 	});
 
-	var lat = {{$member->member_lat}};
-	var lng = {{$member->member_long}};
-	var img = "{{url('images/home.png')}}";
+	var markerLatLng = new google.maps.LatLng({{$member->member_lat}}, {{$member->member_long}});
 
-	var map = new google.maps.Map(document.getElementById('map-canvas'),{
-		center:{
-			lat: lat,
-			lng: lng
-		},
-		zoom: 15
-	});
-	
-	var marker = new google.maps.Marker({
-		position:{
-			lat:lat,
-			lng: lng
-		},
-		map:map,
-		icon: img,
-		title : '{{$member->member_address}}'
-	});
+  var mapOptions = {
+    zoom: 16,
+    center: markerLatLng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+  var markerIcon = {
+        url: 'http://image.flaticon.com/icons/svg/252/252025.svg',
+        scaledSize: new google.maps.Size(50, 50),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(32,65)
+      };
+  
+  var markerLabel = '{{$member->member_name}}';
+    
+  var marker = new MarkerWithLabel({
+    map: map,
+    animation: google.maps.Animation.DROP,
+    position: markerLatLng,
+    icon: markerIcon,
+    labelContent: markerLabel,
+    labelAnchor: new google.maps.Point(40, 5),
+    labelClass: "my-custom-class-for-label", 
+    labelInBackground: true
+    });
 
 </script>
 

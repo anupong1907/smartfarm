@@ -10,6 +10,7 @@ use App\Cow;
 use App\Cow_history;
 use App\Breeder_m;
 use App\Breeder_f;
+use App\Area;
 
 class MemberController extends Controller
 {
@@ -86,6 +87,7 @@ class MemberController extends Controller
         $member = $members[0];
 
         $i = 1;
+        $no = 1;
 
         $member_cows = Cow::join('cow_history','cow_history.cow_id','cow.qrcode')
         ->leftjoin('breeder_m','breeder_m.cow_id','cow.id')
@@ -114,6 +116,9 @@ class MemberController extends Controller
         $a = 0;
         $b = 0;
         $c = 0;
-        return view('profile_member')->with(['member'=>$member,'i'=>$i,'member_cows'=>$member_cows,'breeder_m'=>$breeder_m,'breeder_f'=>$breeder_f,'cow_count'=>$cow_count,'a'=>$a,'b'=>$b,'c'=>$c,'breeder_cows'=>$breeder_cows]);
+        $grass = Area::join('member','member.id','area.member_id')
+        ->where('member.id',$id)
+        ->get();
+        return view('profile_member')->with(['member'=>$member,'i'=>$i,'member_cows'=>$member_cows,'breeder_m'=>$breeder_m,'breeder_f'=>$breeder_f,'cow_count'=>$cow_count,'a'=>$a,'b'=>$b,'c'=>$c,'breeder_cows'=>$breeder_cows,'grass'=>$grass,'no'=>$no]);
     }
 }

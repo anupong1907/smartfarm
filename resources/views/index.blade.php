@@ -105,7 +105,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-8">
 		<h5 style="font-family: 'Prompt', sans-serif; font-size: 16px;">รายงานสถิติการเลี้ยงโคในแต่ละชุมชนรัฐวิสาหกิจ</h5>
 			<div class="form-group">
 				<div id="map-canvas"></div>
@@ -117,13 +117,14 @@
 		var lat = 10.3671;
 		var lng = 99.2438;
 		var img = "{{url('images/cow.png')}}";
+		var img1 = "{{url('images/grass.png')}}";
 
 		var map = new google.maps.Map(document.getElementById('map-canvas'),{
 			center:{
 				lat: lat,
 				lng: lng
 			},
-			zoom: 13
+			zoom: 10
 		});
 
 		@foreach($members as $list)
@@ -134,6 +135,17 @@
 			},
 			map:map,
 			icon: img
+		});
+		@endforeach
+
+		@foreach($grass as $list)
+		var marker = new google.maps.Marker({
+			position:{
+				lat:{{$list->lat}},
+				lng: {{$list->long}}
+			},
+			map:map,
+			icon: img1
 		});
 		@endforeach
 

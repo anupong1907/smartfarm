@@ -47,6 +47,8 @@ Route::get('kokun','CowController@kokun');
 
 //Start GrassController
 Route::get('grass','GrassController@grass');
+Route::get('form_grass','GrassController@form_grass');
+Route::post('post_grass','GrassController@post_grass');
 //End GrassController
 
 //Start DungController

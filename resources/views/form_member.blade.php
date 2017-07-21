@@ -150,7 +150,8 @@
 			lng: 100.50176510000006
 		},
 		map: map,
-		draggable: true
+		draggable: true,
+		title:"เลื่อนไปยังตำแหน่งที่ตั้งบ้านของคุณ"
 	});
 
 	var searchBox = new google.maps.places.SearchBox(document.getElementById('searchmap'));

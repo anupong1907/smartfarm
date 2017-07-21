@@ -74,7 +74,7 @@
 					<span >ระบบการจำหน่ายโค</span> <i class="icon-cart-checkout"></i>
 				</a>
 			</li>
-			<li class="@if(Request::is('grass')=='grass') active @endif">
+			<li class="@if(Request::is('grass')=='grass'||Request::is('form_grass')=='form_grass') active @endif">
 				<a href="{{url('grass')}}">
 					<span >ระบบหญ้าเนียร์เปียร์</span> 
 					<i class="icon-leaf"></i>
