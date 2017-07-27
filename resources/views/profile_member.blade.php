@@ -7,27 +7,10 @@
 		width: 100%;
 		height: 300px;
 	}
-	.my-custom-class-for-label {
-  width: auto; height: 20px;
-  
-  border: 1px solid #eb3a44;
-  border-radius: 5px;
-  
-  background: #fee1d7;
-  color: #eb3a44;
-  text-align: center;
-  line-height: 20px;
-  
-  font-weight: bold;
-  font-size: 12px;
-  padding-left: 10px;
-  padding-right: 10px;
 
-}
 </style>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT4GRmRnmCdikdUOz0HJkJ7YuZJo2NdLc&libraries=places" type="text/javascript"></script>
-<script src="https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js"></script>
 @stop
 
 @section('content')
@@ -485,35 +468,30 @@
 		@endforeach
 	});
 
-	var markerLatLng = new google.maps.LatLng({{$member->member_lat}}, {{$member->member_long}});
+	var lat = {{$member->member_lat}};
+	var lng = {{$member->member_long}};
+	var img = "{{url('images/home.png')}}";
 
-  var mapOptions = {
-    zoom: 16,
-    center: markerLatLng,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-  
-  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	var map = new google.maps.Map(document.getElementById('map-canvas'),{
+		center:{
+			lat: lat,
+			lng: lng
+		},
+		zoom: 15
+	});
+	
+	var marker = new google.maps.Marker({
+		position:{
+			lat:lat,
+			lng: lng
+		},
+		map:map,
+		icon: img,
+		label: "{{$member->member_address}}"
+    	
 
-  var markerIcon = {
-        url: 'http://image.flaticon.com/icons/svg/252/252025.svg',
-        scaledSize: new google.maps.Size(50, 50),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(32,65)
-      };
-  
-  var markerLabel = '{{$member->member_name}}';
-    
-  var marker = new MarkerWithLabel({
-    map: map,
-    animation: google.maps.Animation.DROP,
-    position: markerLatLng,
-    icon: markerIcon,
-    labelContent: markerLabel,
-    labelAnchor: new google.maps.Point(40, 5),
-    labelClass: "my-custom-class-for-label", 
-    labelInBackground: true
-    });
+
+	});
 
 </script>
 

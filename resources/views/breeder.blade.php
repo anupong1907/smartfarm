@@ -50,7 +50,7 @@
 								<span class="label label-primary"> โคพ่อพันธ์ุ </span> 
 							</td>
 							<td class="center">
-								{{$data->member_name}}
+								{{$data->member_name}} 
 							</td>
 							<td class="center">
 								<div class="visible-md visible-lg hidden-sm hidden-xs">
@@ -93,7 +93,7 @@
 				@foreach($cow->slice(0, 7) as $list)
 				<li class="media" >
 					<a class="pull-left" href="#">
-						<img class="media-object" src="@if($list->cow_picture != null) {{ url('images/'. $list->cow_picture) }} @else https://www.shearwater.com/wp-content/plugins/lightbox/images/No-image-found.jpg @endif " alt="">
+						<img class="media-object" src="@if($list->cow_picture != null) {{ url('images/'. $list->cow_picture) }} @else https://www.shearwater.com/wp-content/plugins/lightbox/images/No-image-found.jpg @endif " style=" object-fit: cover; width: 40px; height: 40px; border-radius: 5px;">
 					</a>
 					<div class="media-body">
 						<div class="clearfix">

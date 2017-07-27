@@ -69,7 +69,7 @@
 					</li>
 				</ul>
 			</li>
-			<li class="@if(Request::is('trading') == 'trading'||Request::is('form_trading') == 'form_trading') active @endif">
+			<li class="@if(Request::is('trading') == 'trading'||Request::is('form_trading') == 'form_trading'||Request::is('result_trading') == 'result_trading') active @endif">
 				<a href="{{url('trading')}}">
 					<span >ระบบการจำหน่ายโค</span> <i class="icon-cart-checkout"></i>
 				</a>
@@ -81,6 +81,7 @@
 				</a>
 			</li>
 			<li><a href="index.html"><span >ระบบจัดการมูลโค</span> <i class="icon-truck"></i></a></li>
+			@if(Auth::user()->layer == 1)
 			<li>
 				<a href="#"><span >รัฐวิสาหกิจชุมชน</span> <i class="icon-share2"></i></a>
 				<ul>
@@ -93,6 +94,7 @@
 					@endforeach
 				</ul>
 			</li>
+			@endif
 		</ul>
 		<!-- /main navigation -->
 

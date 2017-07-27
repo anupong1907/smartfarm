@@ -156,7 +156,7 @@ class CowController extends Controller
         $member = Users::join('member','member.users_id','=','users.id')
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
-       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
         ->where('cow.status',1)
         ->select('*','cow.id as cow_id')
         ->get();
@@ -179,7 +179,7 @@ class CowController extends Controller
         $member = Users::join('member','member.users_id','=','users.id')
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
-       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
         ->where('cow.status',1)
         ->select('*','cow.id as cow_id')
         ->get();
@@ -203,7 +203,7 @@ class CowController extends Controller
         $member = Users::join('member','member.users_id','=','users.id')
         ->select('member.name as member_name','users.name as users_name','member.id as member_id')
         ->get();
-       $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
+        $cow_m = Cow::join('breeder_m','breeder_m.cow_id','cow.id')
         ->where('cow.status',1)
         ->select('*','cow.id as cow_id')
         ->get();
@@ -250,7 +250,7 @@ class CowController extends Controller
         ->where('cow_history.status',1)
         ->get();
 
-         $breeder_m = Cow::join('cow_history','cow_history.cow_id','cow.qrcode')
+        $breeder_m = Cow::join('cow_history','cow_history.cow_id','cow.qrcode')
         ->join('breeder_m','breeder_m.cow_id','cow.id')
         ->select('*','cow.id as cow_id')
         ->where('cow_history.status',1)
@@ -260,9 +260,9 @@ class CowController extends Controller
         $members = Member::all();
         $type_breeds = Type_breed::all();
         $breeds = Breed::join('type_breed','type_breed.id','breed.type_breed_id')
-                ->where('breeder_f_id',$id)
-                ->orWhere('breeder_m_id',$id)
-                ->get();
+        ->where('breeder_f_id',$id)
+        ->orWhere('breeder_m_id',$id)
+        ->get();
         $x = 1;
 
         return view('profile_cow')->with(['l'=>$l,'c'=>$c,'members'=>$members,'i'=>$i,'cow_breeder'=>$cow_breeder,'breeder_f'=>$breeder_f,'breeder_m'=>$breeder_m,'type_breeds'=>$type_breeds,'breeds'=>$breeds,'x'=>$x]);
@@ -282,14 +282,7 @@ class CowController extends Controller
         return back();
     }
 
-    public function trading(){
-        $trading = Trading::join('cow','cow.id','trading.cow_id')
-        ->join('customer','customer.id','trading.customer_id')
-        ->select('*','customer.name as customer_name','cow.name as cow_name')
-        ->get();
-        $i = 1;
-        return view('trading')->with(['trading'=>$trading,'i'=>$i]);
-    }
+
 
     public function form_trading(){
         $customer = Customer::all();
@@ -359,5 +352,46 @@ class CowController extends Controller
         $breeder->save();
 
         return back();
+    }
+
+    public function trading(){
+        $trading = Trading::join('cow','cow.id','trading.cow_id')
+        ->join('customer','customer.id','trading.customer_id')
+        ->select('*','customer.name as customer_name','cow.name as cow_name')
+        ->get();
+        $communitys = Users::all();
+        $i = 1;
+        return view('trading')->with(['trading'=>$trading,'i'=>$i,'communitys'=>$communitys]);
+    }
+
+    public function result_trading(Request $request){
+        
+        if($request::get('community')!=null){
+        $trading = Cow::join('trading','trading.cow_id','cow.id')
+        ->join('customer','customer.id','trading.customer_id')
+        ->join('cow_history','cow_history.cow_id','cow.qrcode')
+        ->join('member','member.id','cow_history.member_id')
+        ->where('cow_history.status',1)
+        ->whereIn('users_id',$request::get('community'))
+        ->whereBetween('trading.trading_date',[$request::get('start'),$request::get('end')])
+        ->select('*','customer.name as customer_name','cow.name as cow_name')
+        ->get();
+        }else{
+        $trading = Cow::join('trading','trading.cow_id','cow.id')
+        ->join('customer','customer.id','trading.customer_id')
+        ->join('cow_history','cow_history.cow_id','cow.qrcode')
+        ->join('member','member.id','cow_history.member_id')
+        ->where('cow_history.status',1)
+        ->whereBetween('trading.trading_date',[$request::get('start'),$request::get('end')])
+        ->select('*','customer.name as customer_name','cow.name as cow_name')
+        ->get();
+        }
+        $c = $request::get('community');
+        $start = $request::get('start');
+        $end = $request::get('end');
+        $i = 1;
+
+        
+        return view('result_trading')->with(['trading'=>$trading,'i'=>$i,'c'=>$c,'start'=>$start,'end'=>$end]);
     }
 }

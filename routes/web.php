@@ -37,6 +37,7 @@ Route::post('delete_cow','CowController@delete_cow');
 Route::post('post_history_cow','CowController@post_history_cow');
 Route::get('trading','CowController@trading');
 Route::get('form_trading','CowController@form_trading');
+Route::get('result_trading','CowController@result_trading');
 Route::post('post_customer','CowController@post_customer');
 Route::post('post_trading','CowController@post_trading');
 Route::post('delete_cow_history','CowController@delete_cow_history');

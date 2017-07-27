@@ -77,7 +77,7 @@
 						@endif 
 						@endif
 					</td>
-					<td class="center">{{$list->member_name}}</td>
+					<td class="center">{{$list->member_name}} | {{$list->users_name}}</td>
 					<td class="center">
 						<a href="{{url('profile_cow/'.$list->cow_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
 						<a href="#edit_{{$list->cow_id}}" data-toggle="modal" style="color: #1B2631;"><i class="icon-pencil2"></i></a>&nbsp;&nbsp;

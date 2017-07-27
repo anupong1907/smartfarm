@@ -1,5 +1,31 @@
 @extends('layouts.master')
-
+@section('css')
+<script>
+function check() {
+	var chk =0;
+	var name = document.getElementById('txtname');
+	if(name.value==""){
+		document.getElementById('frmName').className ='form-group has-error';
+		chk=1;
+	}else{
+		document.getElementById('frmName').className ='form-group';
+	}
+	if(document.getElementById('member').value==""){
+		document.getElementById('spnMember').innerHTML = "ข้อมูลผิดพลาด";
+		chk=1;
+	}
+	if (document.getElementById('dob').value=="") {
+		document.getElementById('frmDate').className ='form-group has-error';
+		chk=1;
+	}
+if(chk == 1) {
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>
+@stop
 @section('content')
 <!-- Page header -->
 <div class="page-header">
@@ -24,14 +50,14 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 
-			<form method="post" action="{{url('post_cow')}}" enctype="multipart/form-data" id="myForm">
+			<form method="post" action="{{url('post_cow')}}" enctype="multipart/form-data" onSubmit="return check();" >
 				{{ csrf_field() }}
 				<input type="hidden" name="users_id" value="{{ Auth::user()->id }}">
 				<div class="form-group">
 					<label class="control-label">
-						เจ้าของโค <span class="symbol required"></span>
+						เจ้าของโค <span class="text-danger"> * </span> <span class="text-danger" id="spnMember"></span>
 					</label>
-					<select class="select-full"  name="member_id">
+					<select class="select-full"  name="member_id" id="member">
 						<option value="">&nbsp;</option>
 						@foreach($member as $list)
 						<option value="{{$list->member_id}}">{{$list->member_name}} - {{$list->users_name}}</option>
@@ -40,11 +66,11 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group">
+						<div class="form-group" id="frmName">
 							<label class="control-label">
-								ชื่อ <span class="symbol required"></span>
+								ชื่อ <span class="text-danger"> * </span> <span class="text-danger" id="spnName"></span>
 							</label>
-							<input type="text"  class="form-control" name="name">
+							<input type="text"  class="form-control" name="name" id="txtname" >
 						</div>
 						<div class="form-group">
 							<label class="control-label">
@@ -52,11 +78,11 @@
 							</label>
 							<textarea class="form-control" name="detail"></textarea>
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="frmDate">
 							<label class="control-label">
 								วันเกิด<span class="symbol required"></span>
 							</label>
-								<input class="form-control" type="date" name="dob">
+								<input class="form-control" type="date" name="dob" id="dob">
 						</div>
 						<div class="form-group">
 							<label class="control-label">
@@ -121,7 +147,7 @@
 						</p>
 					</div>
 					<div class="col-md-4">
-						<button class="btn btn-block" type="submit" style="background: #44A504; border-color: #3D9107; color: #fff;">
+						<button class="btn btn-block" type="submit" style="background: #44A504; border-color: #3D9107; color: #fff;" id="btn_submit">
 							เพิ่มข้อมูล 
 						</button>
 					</div>

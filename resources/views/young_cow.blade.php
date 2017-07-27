@@ -40,8 +40,8 @@
 								<th width="30" class="center" style="background-color: #283747; ">ลำดับ</th>
 								<th width="120" style="background-color: #283747; ">รายการ</th>
 								<th width="30"  class="center" style="background-color: #283747; color: #FFF;">เพศ</th>
-								<th width="100" class="center" style="background-color: #283747; ">อายุ</th>
-								<th width="200" class="center" style="background-color: #283747; ">เจ้าของ</th>
+								<th width="80" class="center" style="background-color: #283747; ">อายุ</th>
+								<th width="220" class="center" style="background-color: #283747; ">เจ้าของ</th>
 								<th width="100" class="center" style="background-color: #283747; ">จัดการ</th>
 							</tr>
 						</thead>
@@ -61,7 +61,7 @@
 								<td class="center">
 									{{Carbon::parse($list-> cow_dob)->diff(Carbon::now())->format('%y ปี %m เดือน')}}
 								</td>
-								<td class="center">{{$list->member_name}}</td>
+								<td class="center">{{$list->member_name}} | {{$list->users_name}}</td>
 								<td class="center">
 									<div class="visible-md visible-lg hidden-sm hidden-xs">
 										<a href="{{url('profile_cow/'.$list->cow_id)}}" style="color: #1B2631;"><i class="icon-search3"></i></a>&nbsp;&nbsp;
@@ -83,7 +83,7 @@
 				@foreach($cow->slice(0, 7) as $list)
 				<li class="media" >
 					<a class="pull-left" href="#">
-						<img class="media-object" src="@if($list->cow_picture != null) {{ url('images/'. $list->cow_picture) }} @else https://www.shearwater.com/wp-content/plugins/lightbox/images/No-image-found.jpg @endif " alt="">
+						<img class="media-object" src="@if($list->cow_picture != null) {{ url('images/'. $list->cow_picture) }} @else https://www.shearwater.com/wp-content/plugins/lightbox/images/No-image-found.jpg @endif " style=" object-fit: cover; width: 40px; height: 40px; border-radius: 5px;">
 					</a>
 					<div class="media-body">
 						<div class="clearfix">
